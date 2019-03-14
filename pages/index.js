@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-fetch';
-import StoryList from '../components/StoryList';
-import Layout from '../components/Layout';
-import Link from 'next/link';
-
+import fetch from "isomorphic-fetch";
+import Error from "next/error";
+import Link from "next/link";
+import StoryList from "../components/StoryList";
+import Layout from "../components/Layout";
 
 class Index extends React.Component {
   static async getInitialProps({ req, res, query }) {
@@ -20,20 +20,19 @@ class Index extends React.Component {
       stories = [];
     }
 
-
-    return { stories, page };
+    return { page, stories };
   }
 
   componentDidMount() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register('/service-worker.js')
+        .register("/service-worker.js")
         .then(registration => {
-          console.log('service worker registration successful', registration)
+          console.log("service worker registration successful", registration);
         })
         .catch(err => {
-          console.warn('service worker registation failed', err);
-        })
+          console.warn("service worker registration failed", err.message);
+        });
     }
   }
 
@@ -41,31 +40,34 @@ class Index extends React.Component {
     const { stories, page } = this.props;
 
     if (stories.length === 0) {
-      return <Error statusCode={503} />
+      return <Error statusCode={503} />;
     }
 
     return (
-      <Layout title="Hacker Next" description="A Hacker News clone made it with Next.js">
+      <Layout
+        title="Hacker Next"
+        description="A Hacker News clone made with Next.js"
+      >
         <StoryList stories={stories} />
+
         <footer>
           <Link href={`/?page=${page + 1}`}>
             <a>Next Page ({page + 1})</a>
           </Link>
         </footer>
 
-         <style jsx>{`
+        <style jsx>{`
           footer {
             padding: 1em;
           }
-
           footer a {
             font-weight: bold;
             color: black;
             text-decoration: none;
           }
-         `}</style>
+        `}</style>
       </Layout>
-    )
+    );
   }
 }
 
