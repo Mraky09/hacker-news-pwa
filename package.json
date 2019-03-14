@@ -1,12 +1,13 @@
 {
-  "name": "hacker-nex",
+  "name": "hacker-next",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Hacker News clone made with Next.js",
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
     "start": "NODE_ENV=production node server.js",
-    "build": "next build"
+    "build": "next build",
+    "deploy": "now --public"
   },
   "author": "",
   "license": "ISC",
